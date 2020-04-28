@@ -6,4 +6,15 @@ class Store < ActiveRecord::Base
   def contains_apparel
     errors.add(:new_stores, "must carry mens or womens apparel") if !mens_apparel && !womens_apparel
   end
+
+  private
+  
+    before_destroy :empty?
+
+    def empty?
+      if self.employees.size > 0
+        raise "Error! You're trying to delete a store with employees."
+      end
+    end
+
 end
